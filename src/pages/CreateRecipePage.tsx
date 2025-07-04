@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecipes } from '../hooks/useRecipes';
 import type { RecipeFormData, RecipeFormErrors } from '../types/Recipe';
@@ -8,12 +8,12 @@ const CreateRecipePage: React.FC = () => {
   const { addReceta } = useRecipes();
   const nombreInputRef = useRef<HTMLInputElement>(null);
 
-  // Estados para el formulario controlado
   const [formData, setFormData] = useState<RecipeFormData>({
     nombre: '',
     ingredientes: '',
     pasos: '',
     tiempo: 10,
+    tiempoCoccion: 10,
     dificultad: 'fácil',
     categoria: '',
     porciones: 1
@@ -22,24 +22,21 @@ const CreateRecipePage: React.FC = () => {
   const [errors, setErrors] = useState<RecipeFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // useEffect para enfocar el primer input al cargar la página
-  React.useEffect(() => {
+  useEffect(() => {
     if (nombreInputRef.current) {
       nombreInputRef.current.focus();
     }
   }, []);
 
-  // Función para manejar cambios en los inputs
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'tiempo' || name === 'porciones' ? Number(value) : value
+      [name]: ['tiempo', 'tiempoCoccion', 'porciones'].includes(name) ? Number(value) : value
     }));
 
-    // Limpiar error del campo cuando el usuario empiece a escribir
     if (errors[name as keyof RecipeFormErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -48,7 +45,6 @@ const CreateRecipePage: React.FC = () => {
     }
   };
 
-  // Función de validación
   const validateForm = (): boolean => {
     const newErrors: RecipeFormErrors = {};
 
@@ -72,6 +68,10 @@ const CreateRecipePage: React.FC = () => {
       newErrors.tiempo = 'El tiempo debe ser mayor a 0';
     }
 
+    if (formData.tiempoCoccion < 1) {
+      newErrors.tiempoCoccion = 'El tiempo de cocción debe ser mayor a 0';
+    }
+
     if (formData.porciones < 1) {
       newErrors.porciones = 'Las porciones deben ser mayor a 0';
     }
@@ -80,24 +80,19 @@ const CreateRecipePage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
-      // Simular delay de red
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Procesar los datos del formulario
       const nuevaReceta = {
         nombre: formData.nombre.trim(),
-        imagen: '/placeholder-recipe.svg', // Imagen por defecto
+        imagen: '/placeholder-recipe.svg', 
         ingredientes: formData.ingredientes
           .split('\n')
           .map(ing => ing.trim())
@@ -107,18 +102,16 @@ const CreateRecipePage: React.FC = () => {
           .map(paso => paso.trim())
           .filter(paso => paso.length > 0),
         tiempo: formData.tiempo,
+        tiempoCoccion: formData.tiempoCoccion,
         dificultad: formData.dificultad as 'fácil' | 'medio' | 'difícil',
         categoria: formData.categoria.trim().toLowerCase(),
         porciones: formData.porciones,
-        valoracion: 4.0 // Valoración por defecto
+        valoracion: 4.0
       };
 
       addReceta(nuevaReceta);
-      
-      // Mostrar mensaje de éxito y redirigir
       alert('¡Receta creada exitosamente! 🎉');
       navigate('/recetas');
-      
     } catch {
       alert('Error al crear la receta. Inténtalo de nuevo.');
     } finally {
@@ -130,19 +123,15 @@ const CreateRecipePage: React.FC = () => {
     <div className="create-recipe-page">
       <div className="page-header">
         <h1 className="page-title">➕ Crear Nueva Receta</h1>
-        <p className="page-subtitle">
-          Comparte tu receta favorita con otros estudiantes
-        </p>
+        <p className="page-subtitle">Comparte tu receta favorita con otros estudiantes</p>
       </div>
 
       <form onSubmit={handleSubmit} className="recipe-form">
         <div className="form-section">
           <h3 className="form-section-title">📝 Información Básica</h3>
-          
+
           <div className="form-group">
-            <label htmlFor="nombre" className="form-label">
-              Nombre de la receta *
-            </label>
+            <label htmlFor="nombre" className="form-label">Nombre de la receta *</label>
             <input
               ref={nombreInputRef}
               type="text"
@@ -158,9 +147,7 @@ const CreateRecipePage: React.FC = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="tiempo" className="form-label">
-                Tiempo (minutos) *
-              </label>
+              <label htmlFor="tiempo" className="form-label">Tiempo (minutos) *</label>
               <input
                 type="number"
                 id="tiempo"
@@ -175,9 +162,22 @@ const CreateRecipePage: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="porciones" className="form-label">
-                Porciones *
-              </label>
+              <label htmlFor="tiempoCoccion" className="form-label">Tiempo de cocción (min) *</label>
+              <input
+                type="number"
+                id="tiempoCoccion"
+                name="tiempoCoccion"
+                min="1"
+                max="300"
+                value={formData.tiempoCoccion}
+                onChange={handleInputChange}
+                className={`form-input ${errors.tiempoCoccion ? 'error' : ''}`}
+              />
+              {errors.tiempoCoccion && <span className="error-message">{errors.tiempoCoccion}</span>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="porciones" className="form-label">Porciones *</label>
               <input
                 type="number"
                 id="porciones"
@@ -194,9 +194,7 @@ const CreateRecipePage: React.FC = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="dificultad" className="form-label">
-                Dificultad *
-              </label>
+              <label htmlFor="dificultad" className="form-label">Dificultad *</label>
               <select
                 id="dificultad"
                 name="dificultad"
@@ -211,9 +209,7 @@ const CreateRecipePage: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="categoria" className="form-label">
-                Categoría *
-              </label>
+              <label htmlFor="categoria" className="form-label">Categoría *</label>
               <input
                 type="text"
                 id="categoria"
@@ -231,9 +227,7 @@ const CreateRecipePage: React.FC = () => {
         <div className="form-section">
           <h3 className="form-section-title">🛒 Ingredientes</h3>
           <div className="form-group">
-            <label htmlFor="ingredientes" className="form-label">
-              Lista de ingredientes (uno por línea) *
-            </label>
+            <label htmlFor="ingredientes" className="form-label">Lista de ingredientes (uno por línea) *</label>
             <textarea
               id="ingredientes"
               name="ingredientes"
@@ -250,9 +244,7 @@ const CreateRecipePage: React.FC = () => {
         <div className="form-section">
           <h3 className="form-section-title">👨‍🍳 Preparación</h3>
           <div className="form-group">
-            <label htmlFor="pasos" className="form-label">
-              Pasos de preparación (uno por línea) *
-            </label>
+            <label htmlFor="pasos" className="form-label">Pasos de preparación (uno por línea) *</label>
             <textarea
               id="pasos"
               name="pasos"

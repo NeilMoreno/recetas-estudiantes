@@ -5,6 +5,7 @@ export interface Recipe {
   ingredientes: string[];
   pasos: string[];
   tiempo: number;
+  tiempoCoccion: number; 
   dificultad: 'fácil' | 'medio' | 'difícil';
   categoria: string;
   valoracion: number;
@@ -16,6 +17,7 @@ export interface RecipeFormData {
   ingredientes: string;
   pasos: string;
   tiempo: number;
+  tiempoCoccion: number; 
   dificultad: 'fácil' | 'medio' | 'difícil';
   categoria: string;
   porciones: number;
@@ -26,6 +28,7 @@ export interface RecipeFormErrors {
   ingredientes?: string;
   pasos?: string;
   tiempo?: string;
+  tiempoCoccion?: string; 
   dificultad?: string;
   categoria?: string;
   porciones?: string;

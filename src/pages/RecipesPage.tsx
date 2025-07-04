@@ -8,13 +8,13 @@ const RecipesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const [selectedSort, setSelectedSort] = useState('valoracion-desc'); // 👈 nuevo estado
 
-  // Obtener categorías únicas
+
   const categories = useMemo(() => {
     return Array.from(new Set(recetas.map(receta => receta.categoria)));
   }, [recetas]);
 
-  // Filtrar recetas basado en los criterios
   const filteredRecetas = useMemo(() => {
     return recetas.filter(receta => {
       const matchesSearch = receta.nombre
@@ -33,6 +33,22 @@ const RecipesPage: React.FC = () => {
       return matchesSearch && matchesCategory && matchesDifficulty;
     });
   }, [recetas, searchTerm, selectedCategory, selectedDifficulty]);
+
+  const sortedRecetas = useMemo(() => {
+    const copia = [...filteredRecetas];
+    switch (selectedSort) {
+      case 'valoracion-asc':
+        return copia.sort((a, b) => a.valoracion - b.valoracion);
+      case 'valoracion-desc':
+        return copia.sort((a, b) => b.valoracion - a.valoracion);
+      case 'tiempo-asc':
+        return copia.sort((a, b) => a.tiempo - b.tiempo);
+      case 'tiempo-desc':
+        return copia.sort((a, b) => b.tiempo - a.tiempo);
+      default:
+        return copia;
+    }
+  }, [filteredRecetas, selectedSort]);
 
   return (
     <div className="recipes-page">
@@ -53,6 +69,22 @@ const RecipesPage: React.FC = () => {
         categories={categories}
       />
 
+      {}
+      <div className="sort-bar">
+        <label htmlFor="sort" className="filter-label">Ordenar por:</label>
+        <select
+          id="sort"
+          value={selectedSort}
+          onChange={(e) => setSelectedSort(e.target.value)}
+          className="filter-select"
+        >
+          <option value="valoracion-desc">⭐ Valoración (mayor a menor)</option>
+          <option value="valoracion-asc">⭐ Valoración (menor a mayor)</option>
+          <option value="tiempo-asc">⏱ Tiempo (menor a mayor)</option>
+          <option value="tiempo-desc">⏱ Tiempo (mayor a menor)</option>
+        </select>
+      </div>
+
       <div className="results-info">
         <p className="results-count">
           {filteredRecetas.length === recetas.length 
@@ -62,7 +94,7 @@ const RecipesPage: React.FC = () => {
         </p>
       </div>
 
-      {filteredRecetas.length === 0 ? (
+      {sortedRecetas.length === 0 ? (
         <div className="no-results">
           <h3>😔 No se encontraron recetas</h3>
           <p>Intenta cambiar los filtros o términos de búsqueda</p>
@@ -71,6 +103,7 @@ const RecipesPage: React.FC = () => {
               setSearchTerm('');
               setSelectedCategory('');
               setSelectedDifficulty('');
+              setSelectedSort('valoracion-desc');
             }}
             className="clear-filters-btn"
           >
@@ -79,7 +112,7 @@ const RecipesPage: React.FC = () => {
         </div>
       ) : (
         <div className="recipes-grid">
-          {filteredRecetas.map(receta => (
+          {sortedRecetas.map(receta => (
             <RecipeCard key={receta.id} recipe={receta} />
           ))}
         </div>

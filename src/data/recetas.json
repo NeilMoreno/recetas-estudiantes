@@ -3,7 +3,7 @@
     {
       "id": 1,
       "nombre": "Pasta Universitaria Rápida",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://i.ytimg.com/vi/nPWrvcx3llM/maxresdefault.jpg",
       "ingredientes": ["400g pasta", "1 lata tomate triturado", "2 dientes ajo", "100g queso parmesano", "Aceite de oliva", "Sal y pimienta"],
       "pasos": [
         "Hervir agua con sal y cocinar la pasta según instrucciones",
@@ -14,6 +14,7 @@
       ],
       "tiempo": 15,
       "dificultad": "fácil",
+      "tiempoCoccion": 10,
       "categoria": "italiana",
       "valoracion": 4.5,
       "porciones": 2
@@ -21,7 +22,7 @@
     {
       "id": 2,
       "nombre": "Quesadillas de Pollo",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs_CF73BsOXd2B2KJiOCnJlpF_ryOhzipjNA&s",
       "ingredientes": ["2 tortillas de harina", "150g pollo cocido", "100g queso oaxaca", "1/2 cebolla", "1 pimiento", "Aceite", "Sal"],
       "pasos": [
         "Picar el pollo, cebolla y pimiento en cubos pequeños",
@@ -39,7 +40,7 @@
     {
       "id": 3,
       "nombre": "Arroz Frito Estudiantil",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJJqc4cCX5jcdZmAnDN6m9q6yIS9SJILiUSQ&s",
       "ingredientes": ["2 tazas arroz cocido", "2 huevos", "100g jamón", "1 zanahoria", "Cebollín", "Salsa de soja", "Aceite"],
       "pasos": [
         "Batir los huevos y hacer una tortilla, cortar en tiras",
@@ -57,7 +58,7 @@
     {
       "id": 4,
       "nombre": "Sandwich Club Estudiantil",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuOLzeFDmskJ13T7YGRRGkgPCTxOo9Ve6Muw&s",
       "ingredientes": ["3 rebanadas pan integral", "150g pechuga pollo", "4 rebanadas tocino", "Lechuga", "Tomate", "Mayonesa", "Aguacate"],
       "pasos": [
         "Tostar las rebanadas de pan",
@@ -75,7 +76,7 @@
     {
       "id": 5,
       "nombre": "Smoothie Bowl Energético",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://www.hola.com/horizon/original_aspect_ratio/6e59620ab44a-smoothie-bowl-chia-age-a.jpg",
       "ingredientes": ["1 plátano congelado", "1/2 taza fresas", "1/2 taza yogurt griego", "1 cda miel", "Granola", "Coco rallado", "Chía"],
       "pasos": [
         "Licuar el plátano, fresas, yogurt y miel hasta obtener consistencia cremosa",
@@ -93,7 +94,7 @@
     {
       "id": 6,
       "nombre": "Pizza Casera Express",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXtbInTWMCZoQjDWaVAFLZHD9kY31nuJ_qg&s",
       "ingredientes": ["1 base pizza", "1/2 taza salsa tomate", "200g queso mozzarella", "Pepperoni", "Champiñones", "Orégano"],
       "pasos": [
         "Precalentar horno a 220°C",
@@ -111,7 +112,7 @@
     {
       "id": 7,
       "nombre": "Tacos de Pescado",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnZoDNcZ_xdueNfe7bMby0XVecKiTlIEQReQ&s",
       "ingredientes": ["4 tortillas maíz", "300g filete pescado", "Repollo morado", "Aguacate", "Limón", "Crema", "Cilantro", "Sal"],
       "pasos": [
         "Sazonar el pescado con sal, pimienta y limón",
@@ -129,7 +130,7 @@
     {
       "id": 8,
       "nombre": "Ensalada César Completa",
-      "imagen": "/placeholder-recipe.svg",
+      "imagen": "https://cdn.recetasderechupete.com/wp-content/uploads/2020/10/Ensalada-Cesar-final_.jpg",
       "ingredientes": ["1 lechuga romana", "150g pechuga pollo", "Pan tostado", "Queso parmesano", "Huevo", "Mostaza", "Limón", "Aceite oliva"],
       "pasos": [
         "Lavar y cortar la lechuga en trozos",
@@ -143,6 +144,25 @@
       "categoria": "saludable",
       "valoracion": 4.2,
       "porciones": 2
+    },
+    {
+      "id": 9,
+      "nombre": "Tres Leches",
+      "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOmtOP0_FqPLh3Y6gw8wRUsVuAdKQXOSbt5A&s",
+      "ingredientes": ["6 huevos", "200 gramos de azúcar (1 taza)"," 200 gramos de harina","1 cucharadita de esencia de vainilla"," 1 cucharadita de polvo para hornear"],
+      "pasos": [
+        "PASO 1 Calienta el horno y alista los moldes",
+        "PASO 2 Prepara el caramelo",
+        "PASO 3 Licúa los ingredientes del flan",
+        "PASO 4 Hornea el flan",
+        "PASO 5 Retira del horno"
+      ],
+      "tiempo": 98,
+      "dificultad": "medio",
+      "tiempoCoccion":60,
+      "categoria": "postre",
+      "valoracion": 5,
+      "porciones": 4
     }
   ]
 }

@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecipes } from '../hooks/useRecipes';
 import RecipeCard from '../components/RecipeCard';
+import SearchBar from '../components/SearchBar'; 
 
 const HomePage: React.FC = () => {
   const { recetas } = useRecipes();
+  const [searchTerm, setSearchTerm] = useState(''); 
 
-  // Obtener las recetas más valoradas (top 3)
-  const recetasDestacadas = recetas
+  const recetasFiltradas = recetas.filter((receta) =>
+    receta.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const recetasDestacadas = [...recetasFiltradas]
     .sort((a, b) => b.valoracion - a.valoracion)
     .slice(0, 3);
 
-  // Obtener recetas rápidas (menos de 20 minutos)
-  const recetasRapidas = recetas
-    .filter(receta => receta.tiempo <= 20)
+  const recetasRapidas = recetasFiltradas
+    .filter((receta) => receta.tiempo <= 20)
     .slice(0, 3);
 
   return (
@@ -35,10 +39,15 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {}
+      <div className="main-content">
+        <SearchBar onSearch={(term) => setSearchTerm(term)} />
+      </div>
+
       <section className="featured-section">
         <h2 className="section-title">⭐ Recetas Más Valoradas</h2>
         <div className="recipes-grid">
-          {recetasDestacadas.map(receta => (
+          {recetasDestacadas.map((receta) => (
             <RecipeCard key={receta.id} recipe={receta} />
           ))}
         </div>
@@ -53,7 +62,7 @@ const HomePage: React.FC = () => {
         <h2 className="section-title">⚡ Recetas Rápidas</h2>
         <p className="section-subtitle">Perfectas para cuando tienes poco tiempo</p>
         <div className="recipes-grid">
-          {recetasRapidas.map(receta => (
+          {recetasRapidas.map((receta) => (
             <RecipeCard key={receta.id} recipe={receta} />
           ))}
         </div>
@@ -62,18 +71,21 @@ const HomePage: React.FC = () => {
       <section className="stats-section">
         <div className="stats-container">
           <div className="stat-item">
-            <span className="stat-number">{recetas.length}</span>
+            <span className="stat-number">{recetasFiltradas.length}</span>
             <span className="stat-label">Recetas</span>
           </div>
           <div className="stat-item">
             <span className="stat-number">
-              {Math.round(recetas.reduce((acc, r) => acc + r.tiempo, 0) / recetas.length)}
+              {Math.round(
+                recetasFiltradas.reduce((acc, r) => acc + r.tiempo, 0) /
+                  (recetasFiltradas.length || 1)
+              )}
             </span>
             <span className="stat-label">Min Promedio</span>
           </div>
           <div className="stat-item">
             <span className="stat-number">
-              {recetas.filter(r => r.dificultad === 'fácil').length}
+              {recetasFiltradas.filter((r) => r.dificultad === 'fácil').length}
             </span>
             <span className="stat-label">Recetas Fáciles</span>
           </div>

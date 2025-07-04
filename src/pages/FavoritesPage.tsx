@@ -6,7 +6,6 @@ import RecipeCard from '../components/RecipeCard';
 const FavoritesPage: React.FC = () => {
   const { recetas, favoritos } = useRecipes();
 
-  // Obtener las recetas favoritas
   const recetasFavoritas = recetas.filter(receta => 
     favoritos.includes(receta.id)
   );
